@@ -1,3 +1,4 @@
+
 name: Build and Push Docker Image
 
 on:
@@ -5,9 +6,15 @@ on:
     branches:
       - main
 
+env:
+  latest_version: 84
+
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php_version: [82, 83, 84]
 
     steps:
       - name: Checkout code
@@ -27,4 +34,8 @@ jobs:
         with:
           context: .
           push: true
-          tags: manudonihubcoreai/composer:latest
+          tags: |
+            manudonihubcoreai/composer:${{ matrix.php_version }}
+            ${{ matrix.php_version == env.latest_version && 'manudonihubcoreai/composer:latest' || '' }}
+          build-args: |
+            PHP_VERSION=${{ matrix.php_version }}
