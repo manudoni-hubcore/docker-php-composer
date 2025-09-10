@@ -27,6 +27,8 @@ docker build --build-arg PHP_VERSION=81 --build-arg USER_ID=$(id -u) --build-arg
 
 ```bash
 docker run -it --rm -u "$(id -u):$(id -g)" \
+    -e HOME=/home/docker \
+    -e COMPOSER_HOME=/home/docker/.composer \
     -v composer_data:/home/docker/.composer \
     -v "$(pwd):/var/www/html" \
     -w /var/www/html \
@@ -37,6 +39,8 @@ Esempio per installare le dipendenze:
 
 ```bash
 docker run -it --rm -u "$(id -u):$(id -g)" \
+    -e HOME=/home/docker \
+    -e COMPOSER_HOME=/home/docker/.composer \
     -v composer_data:/home/docker/.composer \
     -v "$(pwd):/var/www/html" \
     -w /var/www/html \
@@ -63,6 +67,8 @@ Mostra i pacchetti globali:
 
 ```bash
 docker run -it --rm -u "$(id -u):$(id -g)" \
+    -e HOME=/home/docker \
+    -e COMPOSER_HOME=/home/docker/.composer \
     -v composer_data:/home/docker/.composer \
     manudonihubcoreai/composer:latest composer global show -D
 ```
@@ -71,6 +77,8 @@ Installa un pacchetto:
 
 ```bash
 docker run -it --rm -u "$(id -u):$(id -g)" \
+    -e HOME=/home/docker \
+    -e COMPOSER_HOME=/home/docker/.composer \
     -v composer_data:/home/docker/.composer \
     -v "$(pwd):/var/www/html" \
     -w /var/www/html \
@@ -82,7 +90,7 @@ docker run -it --rm -u "$(id -u):$(id -g)" \
 Per semplificare l'utilizzo di Composer senza installarlo localmente, puoi aggiungere questo alias al tuo `.bashrc`, `.zshrc` o file di configurazione della shell:
 
 ```bash
-alias composer='docker run -it --rm -u "$(id -u):$(id -g)" -v composer_data:/home/docker/.composer -v "$(pwd):/var/www/html" -w /var/www/html manudonihubcoreai/composer:latest composer'
+alias composer='docker run -it --rm -u "$(id -u):$(id -g)" -e HOME=/home/docker -e COMPOSER_HOME=/home/docker/.composer -v composer_data:/home/docker/.composer -v "$(pwd):/var/www/html" -w /var/www/html manudonihubcoreai/composer:latest composer'
 ```
 
 In questo modo potrai eseguire tutti i comandi Composer direttamente dal terminale, come se fosse installato nativamente:
